@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="T-Rex Chrome Runner Pro", page_icon="🦖", layout="centered")
+st.set_page_config(page_title="T-Rex Runner Pro", page_icon="🦖", layout="centered")
 
 st.title("🦖 T-Rex Runner Arcade Pro")
 st.caption("🎮 **Điều khiển:** Phím cách / Mũi tên Lên (Nhảy) | Mũi tên Xuống (Cúi người)")
@@ -51,7 +51,7 @@ game_code = """
   <canvas id="gameCanvas" width="640" height="220"></canvas>
   <div class="hud">
     <button id="soundBtn">🔊 Bật / Tắt Nhạc</button>
-    <span style="font-size: 13px; color: #555;">Bấm Space/↑ để Nhảy, Giữ ↓ để Cúi</span>
+    <span style="font-size: 13px; color: #555;">Space/↑: Nhảy | Giữ ↓: Cúi</span>
   </div>
 
   <script>
@@ -60,7 +60,7 @@ game_code = """
     const soundBtn = document.getElementById("soundBtn");
 
     // ==========================================
-    // ÂM THANH & NHẠC NỀN
+    // ÂM THANH & NHẠC NỀN WEB AUDIO API
     // ==========================================
     let audioCtx = null;
     let isMuted = false;
@@ -96,7 +96,7 @@ game_code = """
         const gain = audioCtx.createGain();
         osc.type = "sine";
         osc.frequency.setValueAtTime(160, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.14);
+        osc.frequency.exponentialRampToValueAtTime(520, audioCtx.currentTime + 0.14);
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.14);
         osc.connect(gain);
@@ -142,7 +142,7 @@ game_code = """
     });
 
     // ==========================================
-    // SPRITES VECTOR NÉT CHUẨN ARCADE
+    // RENDER HÌNH ẢNH PIXEL CHUẨN (T-REX BẠN CUNG CẤP)
     // ==========================================
     function createSvgImg(svgXml) {
       const img = new Image();
@@ -150,72 +150,80 @@ game_code = """
       return img;
     }
 
-    // Khủng long chạy chân 1
+    // T-Rex chân trái chạy (Chuyển thể chuẩn xác theo ảnh mẫu pixel)
     const dinoRun1 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 47" width="44" height="47">
-        <path fill="#4b5563" d="M22 0h14v2h-14zm14 2h8v12h-2v2h-6v2h-4v2h-2v2h-2v4h-2v2h-4v2H6v2H4v2H2v4H0v7h2v-5h2v-2h2v-2h2v-2h2v2h2v7h2v-6h4v6h2v-6h2v-2h2v-2h2v-2h2v-4h2v-2h2v-2h4v-2h2V12h-8V8h6V6h-8V2z"/>
-        <rect x="36" y="4" width="3" height="3" fill="#ffffff"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" shape-rendering="crispEdges">
+        <path fill="#535353" d="
+          M13 2h7v1h-7zm-1 1h9v5h-9zm-1 5h10v2h-3v1h3v1h-4v-1h-6zm0 2h1v4h-1zm3 2h2v1h-2zm-5-3h4v4h-4zm-1 1h1v4h-1zm-1 1h1v5h-1zm-1 1h1v5h-1zm-1 1h1v5h-1zm-1 2h1v4h-1zm-1-3h1v7h-1zm5 4h1v1h-1zm4 0h1v2h-1zm-3 1h1v3h-1zm3 1h1v2h-1zm-4 2h2v1h-2zm4 0h2v1h-2z
+        "/>
+        <rect x="14" y="3.5" width="1" height="1" fill="#ffffff" />
       </svg>
     `);
 
-    // Khủng long chạy chân 2
+    // T-Rex chân phải chạy
     const dinoRun2 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 47" width="44" height="47">
-        <path fill="#4b5563" d="M22 0h14v2h-14zm14 2h8v12h-2v2h-6v2h-4v2h-2v2h-2v4h-2v2h-4v2H6v2H4v2H2v4H0v7h2v-5h2v-2h2v-2h2v-2h2v6h2v-4h4v6h2v-6h2v-2h2v-2h2v-2h2v-4h2v-2h2v-2h4v-2h2V12h-8V8h6V6h-8V2z"/>
-        <rect x="36" y="4" width="3" height="3" fill="#ffffff"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" shape-rendering="crispEdges">
+        <path fill="#535353" d="
+          M13 2h7v1h-7zm-1 1h9v5h-9zm-1 5h10v2h-3v1h3v1h-4v-1h-6zm0 2h1v4h-1zm3 2h2v1h-2zm-5-3h4v4h-4zm-1 1h1v4h-1zm-1 1h1v5h-1zm-1 1h1v5h-1zm-1 1h1v5h-1zm-1 2h1v4h-1zm-1-3h1v7h-1zm5 4h1v3h-1zm3 0h1v1h-1zm-1 2h2v1h-2zm-3 1h2v1h-2z
+        "/>
+        <rect x="14" y="3.5" width="1" height="1" fill="#ffffff" />
       </svg>
     `);
 
-    // Khủng long Cúi (Ducking)
+    // T-Rex Cúi (Ducking)
     const dinoDuck1 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 30" width="59" height="30">
-        <path fill="#4b5563" d="M0 16h4v-2h8v-2h6v-2h12v-2h18v2h-2v2h8v10h-2v2h-8v-2h-4v4h-2v2h-4v-4h-2v4h-2v-4h-8v-2H16v-2H6v2H0z"/>
-        <rect x="49" y="10" width="3" height="3" fill="#ffffff"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 16" width="60" height="32" shape-rendering="crispEdges">
+        <path fill="#535353" d="
+          M0 9h2v-2h2v-1h4v-1h6v-1h9v2h-1v1h4v4h-1v1h-4v-1h-2v2h-1v1h-2v-2h-1v2h-1v-2h-4v-1H8v-1H2v1H0zm25-1h1v1h-1z
+        "/>
+        <rect x="25" y="7" width="1" height="1" fill="#ffffff" />
       </svg>
     `);
 
     const dinoDuck2 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59 30" width="59" height="30">
-        <path fill="#4b5563" d="M0 16h4v-2h8v-2h6v-2h12v-2h18v2h-2v2h8v10h-2v2h-8v-2h-4v4h-2v-4h-4v4h-2v-4h-8v-2H16v-2H6v2H0z"/>
-        <rect x="49" y="10" width="3" height="3" fill="#ffffff"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 16" width="60" height="32" shape-rendering="crispEdges">
+        <path fill="#535353" d="
+          M0 9h2v-2h2v-1h4v-1h6v-1h9v2h-1v1h4v4h-1v1h-4v-1h-2v2h-1v1h-1v-2h-2v2h-1v-2h-4v-1H8v-1H2v1H0zm25-1h1v1h-1z
+        "/>
+        <rect x="25" y="7" width="1" height="1" fill="#ffffff" />
       </svg>
     `);
 
-    // Chim bay (Vỗ cánh lên / xuống)
+    // Chim bay
     const bird1 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36" width="46" height="36">
-        <path fill="#374151" d="M22 0h6v8h-6zm0 8h16v6H22zm0 6h24v6H22zm-8 6h32v6H14zm-8 6h40v6H6zM0 32h34v4H0z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36" width="46" height="36" shape-rendering="crispEdges">
+        <path fill="#535353" d="M22 0h6v8h-6zm0 8h16v6H22zm0 6h24v6H22zm-8 6h32v6H14zm-8 6h40v6H6zM0 32h34v4H0z"/>
       </svg>
     `);
     const bird2 = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36" width="46" height="36">
-        <path fill="#374151" d="M14 6h16v6H14zm-8 6h30v6H6zm-6 6h46v6H0zm8 6h28v6H8zm12 6h8v6h-8z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 36" width="46" height="36" shape-rendering="crispEdges">
+        <path fill="#535353" d="M14 6h16v6H14zm-8 6h30v6H6zm-6 6h46v6H0zm8 6h28v6H8zm12 6h8v6h-8z"/>
       </svg>
     `);
 
-    // Xương rồng lớn & nhỏ
+    // Cây xương rồng
     const cactusSingle = createSvgImg(`
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 45" width="24" height="45">
-        <path fill="#15803d" d="M8 0h8v45H8zM2 14h6v6H2zm0 6h4v14H2zM16 18h6v6h-6zm4 6h4v10h-4z"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 45" width="24" height="45" shape-rendering="crispEdges">
+        <path fill="#535353" d="M8 0h8v45H8zM2 14h6v6H2zm0 6h4v14H2zM16 18h6v6h-6zm4 6h4v10h-4z"/>
       </svg>
     `);
 
     // ==========================================
-    // BIẾN KHỞI TẠO TRÒ CHƠI
+    // LOGIC GAME
     // ==========================================
     const GROUND_Y = 175;
     let dino = {
       x: 50,
-      y: GROUND_Y - 42,
-      w: 42,
-      h: 44,
+      y: GROUND_Y - 46,
+      w: 46,
+      h: 46,
       vy: 0,
       jumping: false,
       ducking: false
     };
 
     let obstacles = [];
-    let clouds = [{ x: 150, y: 40 }, { x: 380, y: 70 }, { x: 550, y: 30 }];
+    let clouds = [{ x: 140, y: 35 }, { x: 360, y: 65 }, { x: 530, y: 30 }];
     let stars = [];
     for(let i=0; i<25; i++) {
       stars.push({ x: Math.random() * 640, y: Math.random() * 120, r: Math.random() * 1.5 + 0.5 });
@@ -228,7 +236,6 @@ game_code = """
     let frame = 0;
     let isNight = false;
 
-    // Phím điều khiển
     const keys = {};
     window.addEventListener("keydown", (e) => {
       keys[e.code] = true;
@@ -263,7 +270,7 @@ game_code = """
     }
 
     function resetGame() {
-      dino.y = GROUND_Y - 42;
+      dino.y = GROUND_Y - 46;
       dino.vy = 0;
       dino.jumping = false;
       dino.ducking = false;
@@ -275,12 +282,9 @@ game_code = """
       loop();
     }
 
-    // ==========================================
-    // VÒNG LẶP CHÍNH
-    // ==========================================
     function loop() {
       if (gameOver) {
-        ctx.fillStyle = isNight ? "#f3f4f6" : "#1f2937";
+        ctx.fillStyle = isNight ? "#f3f4f6" : "#222";
         ctx.font = "bold 22px monospace";
         ctx.fillText("G A M E   O V E R", 220, 95);
         ctx.font = "14px monospace";
@@ -289,51 +293,49 @@ game_code = """
       }
 
       frame++;
-      
-      // Tăng điểm
+
+      // Tăng điểm và độ khó
       if (frame % 5 === 0) {
         score++;
-        // Cứ mỗi 100 điểm: Đổi Ngày / Đêm và Tăng Tốc Độ
         if (score % 100 === 0) {
           isNight = (Math.floor(score / 100) % 2 === 1);
-          speed += 0.45; // Tăng độ khó
-          playTone(600, 0.2, "sine", 0.1); // Tiếng ting báo hiệu qua 100 điểm
+          speed += 0.45; // Tăng tốc mỗi 100 điểm
+          playTone(600, 0.2, "sine", 0.1);
         }
       }
 
-      // Xử lý Cúi (Duck)
+      // Xử lý Cúi người
       if (keys["ArrowDown"] && !dino.jumping) {
         dino.ducking = true;
-        dino.w = 56;
+        dino.w = 58;
         dino.h = 28;
         dino.y = GROUND_Y - 28;
       } else if (!dino.jumping) {
         dino.ducking = false;
-        dino.w = 42;
-        dino.h = 44;
-        dino.y = GROUND_Y - 44;
+        dino.w = 46;
+        dino.h = 46;
+        dino.y = GROUND_Y - 46;
       }
 
-      // Vật lý nhảy
+      // Xử lý Nhảy
       if (dino.jumping) {
         dino.y += dino.vy;
-        dino.vy += 0.65; // Trọng lực
-        if (dino.y >= GROUND_Y - 44) {
-          dino.y = GROUND_Y - 44;
+        dino.vy += 0.65;
+        if (dino.y >= GROUND_Y - 46) {
+          dino.y = GROUND_Y - 46;
           dino.jumping = false;
           dino.vy = 0;
         }
       }
 
-      // Xoá màn hình theo màu Ngày/Đêm
-      ctx.fillStyle = isNight ? "#111827" : "#f9fafb";
+      // Nền Ngày / Đêm
+      ctx.fillStyle = isNight ? "#111827" : "#f7f7f7";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Vẽ Trăng Sao (Đêm) hoặc Mây (Ngày)
       if (isNight) {
         ctx.fillStyle = "#fbbf24";
         ctx.beginPath();
-        ctx.arc(560, 45, 16, 0, Math.PI * 2);
+        ctx.arc(560, 45, 15, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "#ffffff";
@@ -343,7 +345,7 @@ game_code = """
           ctx.fill();
         });
       } else {
-        ctx.fillStyle = "#e5e7eb";
+        ctx.fillStyle = "#e0e0e0";
         clouds.forEach(c => {
           c.x -= speed * 0.25;
           if (c.x < -60) c.x = canvas.width + Math.random() * 80;
@@ -355,15 +357,15 @@ game_code = """
         });
       }
 
-      // Vẽ Đường Đất
-      ctx.strokeStyle = isNight ? "#4b5563" : "#9ca3af";
+      // Mặt đất
+      ctx.strokeStyle = isNight ? "#4b5563" : "#757575";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, GROUND_Y);
       ctx.lineTo(canvas.width, GROUND_Y);
       ctx.stroke();
 
-      // Vẽ Khủng Long (Chọn Frame Chạy hoặc Cúi)
+      // Render Khủng Long đúng hình ảnh mẫu
       let currentDinoImg;
       const legToggle = Math.floor(frame / 6) % 2 === 0;
       if (dino.ducking) {
@@ -375,40 +377,23 @@ game_code = """
       }
       ctx.drawImage(currentDinoImg, dino.x, dino.y, dino.w, dino.h);
 
-      // Sinh chướng ngại vật (Cây xương rồng hoặc Chim)
+      // Sinh chướng ngại vật
       const minDistance = Math.max(55, 95 - Math.floor(score / 50));
       if (frame % minDistance === 0 && Math.random() > 0.28) {
-        // Sau 100 điểm bắt đầu xuất hiện Chim
         const canSpawnBird = score >= 100 && Math.random() > 0.45;
-
         if (canSpawnBird) {
-          // Chim: 2 độ cao (Bay thấp buộc cúi: 130px; Bay tầm trung: 105px)
           const birdY = Math.random() > 0.5 ? (GROUND_Y - 32) : (GROUND_Y - 55);
-          obstacles.push({
-            type: "bird",
-            x: canvas.width,
-            y: birdY,
-            w: 42,
-            h: 30
-          });
+          obstacles.push({ type: "bird", x: canvas.width, y: birdY, w: 42, h: 30 });
         } else {
-          // Xương rồng mặt đất
-          obstacles.push({
-            type: "cactus",
-            x: canvas.width,
-            y: GROUND_Y - 42,
-            w: 24,
-            h: 42
-          });
+          obstacles.push({ type: "cactus", x: canvas.width, y: GROUND_Y - 42, w: 22, h: 42 });
         }
       }
 
-      // Xử lý di chuyển & va chạm
+      // Di chuyển & Xử lý va chạm
       for (let i = obstacles.length - 1; i >= 0; i--) {
         let obs = obstacles[i];
         obs.x -= speed;
 
-        // Vẽ chướng ngại vật
         if (obs.type === "cactus") {
           ctx.drawImage(cactusSingle, obs.x, obs.y, obs.w, obs.h);
         } else {
@@ -416,8 +401,8 @@ game_code = """
           ctx.drawImage(wingToggle ? bird1 : bird2, obs.x, obs.y, obs.w, obs.h);
         }
 
-        // Hitbox chính xác (thu nhỏ lề 4px để công bằng)
-        const padX = 5, padY = 4;
+        // Hitbox tinh chỉnh
+        const padX = 6, padY = 5;
         if (
           dino.x + padX < obs.x + obs.w - padX &&
           dino.x + dino.w - padX > obs.x + padX &&
@@ -434,7 +419,7 @@ game_code = """
         }
       }
 
-      // Hiển thị Điểm số & Chế độ ngày đêm
+      // Điểm số
       ctx.fillStyle = isNight ? "#e5e7eb" : "#374151";
       ctx.font = "bold 15px monospace";
       const scoreStr = score.toString().padStart(5, '0');
